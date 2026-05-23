@@ -43,10 +43,11 @@ if page == "1. User Details":
             "Select...",
             "School Student",
             "College Student",
+            "Business", 
             "Industry",
             "Academia",
-            "Home Development",
-            "None"
+            "Homemaking",
+            "Other"
         ]
         # Find the previous index to maintain state, or default to 0 ("Select...")
         try:
