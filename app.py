@@ -39,7 +39,26 @@ if page == "1. User Details":
     with col2:
         st.session_state.user_data['Gender'] = st.selectbox("Gender", ["Select...", "Female", "Male", "Other", "Prefer not to say"], index=0)
         st.session_state.user_data['Country'] = st.text_input("Country", st.session_state.user_data.get('Country', ''))
-        st.session_state.user_data['Occupation'] = st.text_input("Occupation", st.session_state.user_data.get('Occupation', ''))
+        occupation_options = [
+        "Select...", 
+        "School Student", 
+        "College Student", 
+        "Industry", 
+        "Academia", 
+        "Home Development", 
+        "None"
+        ]
+        # Find the previous index to maintain state, or default to 0 ("Select...")
+        try:
+            default_occ_index = occupation_options.index(st.session_state.user_data.get('Occupation', 'Select...'))
+        except ValueError:
+            default_occ_index = 0
+
+st.session_state.user_data['Occupation'] = st.selectbox(
+    "Occupation", 
+    options=occupation_options, 
+    index=default_occ_index
+)
     
     st.session_state.user_data['Additional Info'] = st.text_area("Additional Info (Optional)", st.session_state.user_data.get('Additional Info', ''))
 
