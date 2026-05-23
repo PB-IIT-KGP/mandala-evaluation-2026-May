@@ -30,7 +30,7 @@ page = st.sidebar.radio("Go to:", ["1. User Details", "2. Rate Mandalas", "3. Su
 if page == "1. User Details":
     st.title("Rater Information")
     st.write("Please provide your details before starting the evaluation.")
-    
+
     col1, col2 = st.columns(2)
     with col1:
         st.session_state.user_data['Name'] = st.text_input("Name", st.session_state.user_data.get('Name', ''))
@@ -40,13 +40,13 @@ if page == "1. User Details":
         st.session_state.user_data['Gender'] = st.selectbox("Gender", ["Select...", "Female", "Male", "Other", "Prefer not to say"], index=0)
         st.session_state.user_data['Country'] = st.text_input("Country", st.session_state.user_data.get('Country', ''))
         occupation_options = [
-        "Select...", 
-        "School Student", 
-        "College Student", 
-        "Industry", 
-        "Academia", 
-        "Home Development", 
-        "None"
+            "Select...",
+            "School Student",
+            "College Student",
+            "Industry",
+            "Academia",
+            "Home Development",
+            "None"
         ]
         # Find the previous index to maintain state, or default to 0 ("Select...")
         try:
@@ -54,18 +54,20 @@ if page == "1. User Details":
         except ValueError:
             default_occ_index = 0
 
-st.session_state.user_data['Occupation'] = st.selectbox(
-    "Occupation", 
-    options=occupation_options, 
-    index=default_occ_index
-)
-    
+        # FIXED: Indented correctly to stay inside the col2 block
+        st.session_state.user_data['Occupation'] = st.selectbox(
+            "Occupation",
+            options=occupation_options,
+            index=default_occ_index
+        )
+
+    # FIXED: Indented to align with col1 and col2, escaping the 'with col2:' block
     st.session_state.user_data['Additional Info'] = st.text_area("Additional Info (Optional)", st.session_state.user_data.get('Additional Info', ''))
 
 # --- PAGE 2: IMAGE GRID ---
 elif page == "2. Rate Mandalas":
     st.title("Mandala Evaluation (0 = Worst, 10 = Best)")
-    
+
     if not image_files:
         st.warning("No images found in the 'images' folder.")
     else:
@@ -77,11 +79,11 @@ elif page == "2. Rate Mandalas":
                 if i + j < len(image_files):
                     img_name = image_files[i + j]
                     img_path = os.path.join(IMAGE_DIR, img_name)
-                    
+
                     with col:
                         # Display the image tightly
                         st.image(img_path, use_container_width=True)
-                        
+
                         # Display the slider
                         current_score = st.session_state.scores.get(img_name, 5) # Default to 5
                         score = st.slider(f"Score for {img_name}", 0, 10, current_score, key=f"slider_{img_name}")
@@ -92,13 +94,13 @@ elif page == "2. Rate Mandalas":
 elif page == "3. Submit":
     st.title("Review and Submit")
     st.write("Thank you for completing the evaluation. Please download your results and return them.")
-    
+
     # Combine user data and scores into one dictionary
     final_data = {**st.session_state.user_data, **st.session_state.scores}
     df = pd.DataFrame([final_data])
-    
+
     st.dataframe(df) # Shows a preview of the data
-    
+
     # Convert dataframe to CSV for download
     csv = df.to_csv(index=False).encode('utf-8')
     st.download_button(
